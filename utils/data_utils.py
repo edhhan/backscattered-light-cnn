@@ -7,29 +7,11 @@ import numpy as np
 import random
 
 
-
-def clean_data(nb_photon):
-    path = "C:/Users/Edward/Desktop" + "\\" + nb_photon
-    files = os.listdir(path)
-
-    for file in files:
-
-        if nb_photon == "1e3":
-            if 9000 <= os.stat(path + "\\" + file).st_size <= 12000:
-                pass
-            else:
-                os.remove(path + "\\" + file)
-
-        else:
-            if 20000 <= os.stat(path + "\\" + file).st_size <= 30000:
-                pass
-            else:
-                os.remove(path + "\\" + file)
-
-
 def to_json(nb_photon):
-    path = "C:/Users/Edward/Desktop" + "\\" + nb_photon  # TODO : change for a different user
-    files = os.listdir(path)
+
+    current_path = os.path.dirname(os.path.realpath(__file__))
+    data_path = os.path.join(current_path, nb_photon)
+    files = os.listdir(data_path)
 
     for file in files:
         splited_file = file.split(".")
@@ -46,6 +28,7 @@ def load_data(nb_photon):
     Function that reads multiple .json files
     :return: the actual return is a .npy saved file in the main repos
     """
+
     data_path = "C:/Users/Edward/Desktop" + "\\" + nb_photon
     files = os.listdir(data_path)
     data = []
@@ -131,14 +114,12 @@ class CustomDataSetLoaderCNN(Dataset):
         return self.len
 
 
-
 def preprocess(model_name, nb_photon, batch_size,
                loading=True):  # flag to load data if necessary, SHOULD BE FALSE if data is already loaded
 
     # Load data from JSON file if necessary (LOAD_DATA = True)
     if loading:
         #to_json(nb_photon)
-        clean_data(nb_photon)
         load_data(nb_photon)
 
     # Import pre-loaded data from .npy file

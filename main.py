@@ -60,7 +60,7 @@ while input_ok is False:
     if input_photon == '1e3' or '1e3' or '1e5' or '1e6':
         input_ok = True
     else:
-        input_model = input("wrong input of photon: {1e3, 1e4, 1e5, 1e6, 1e7}")
+        input_model = input("wrong input of photon: {1e3, 1e4, 1e5, 1e6}")
 
 
 nn_model = CNN()
