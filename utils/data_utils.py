@@ -69,7 +69,10 @@ def load_data(nb_photon):
 
 
 def reformat(data_intensity):
-
+    """
+    Utily function that reshapes the .txt files into the proper 2D matrix-image
+        -Note : the .txt files are saved as a flatten 2D-array
+    """
     side_length = 35
     data_reshape = np.zeros((35, 35))
     for i in range(0, 35):
@@ -109,15 +112,20 @@ class CustomDataSetLoaderCNN(Dataset):
         return self.len
 
 
-def preprocess(nb_photon, batch_size):  # flag to load data if necessary, SHOULD BE FALSE if data is already loaded
+def preprocess(nb_photon, batch_size):
+    """
+    Prepares the data before training
+    """
 
     # Load data from JSON file if necessary
     working_dir = os.getcwd()
     data_dir = os.path.join(working_dir, "data")
     os.chdir(data_dir)
 
+    # If data is already unzipped and ready to be used, then load directly
     try:
         load_data(nb_photon)
+    # Unzip and generate a .npy data file
     except Exception as e:
         print(e, "unzipping data :" + nb_photon)
         if platform.system() == "Windows":
@@ -142,6 +150,7 @@ def preprocess(nb_photon, batch_size):  # flag to load data if necessary, SHOULD
     data_validation_custom = CustomDataSetLoaderCNN(data_validation, input_size)
     data_accuracy_custom = CustomDataSetLoaderCNN(data_validation, input_size)
 
+    # Custom Dataloader objects based from the PyTorch library
     train_loader = DataLoader(dataset=data_train_custom, batch_size=batch_size, shuffle=True)
     validation_loader = DataLoader(dataset=data_validation_custom, batch_size=batch_size, shuffle=True)
     accuracy_loader = DataLoader(dataset=data_accuracy_custom, batch_size=batch_size, shuffle=True)
@@ -149,7 +158,10 @@ def preprocess(nb_photon, batch_size):  # flag to load data if necessary, SHOULD
     return train_loader, validation_loader, accuracy_loader
 
 
-def gen_noise(signal, nb_photons, longueur_onde, dim):
+def gen_noise(signal, nb_photons, wavelength, dim):
+    """
+    Utily function that generate shotnoise and thermal noise on the 2d images for given physical parameters
+    """
     eta = 0.9
     c = 3e8
     h = 6.626e-34
@@ -158,7 +170,7 @@ def gen_noise(signal, nb_photons, longueur_onde, dim):
     temperature = 273  # in Kelvin
     resistance = 1e6  # in Ohms
 
-    nu = c/(longueur_onde * 1e-9)
+    nu = c/(wavelength * 1e-9)
     delta_f = c/(20 * 1e-9)
 
     source_power = (nb_photons / 5 * 1e-9) * (h * nu)

@@ -9,11 +9,11 @@ from utils.training_utils import get_accuracy, train
 
 def testing(nn_model, nb_photon, nb_epoch, lr, batch_size, GPU=False):
     """
-    :param nn_model:
-    :param nb_epoch:
-    :param lr:
-    :param GPU:
-    :return:
+    :param nn_model: a PyTorch model
+    :param nb_epoch
+    :param lr
+    :param GPU: a boolean flag that enables some cuda features from the PyTorch library
+    :return: the performance of the model on a given dataset (nb_photon)
     """
     best_precision = 0
     optimizer = optim.Adam(nn_model.parameters(), lr=lr, weight_decay=0.05)
@@ -52,7 +52,6 @@ def testing(nn_model, nb_photon, nb_epoch, lr, batch_size, GPU=False):
 ############
 
 GPU = True
-
 input_photon = input("Number of photons :")
 
 # Input nb of photons
@@ -63,10 +62,10 @@ while input_ok is False:
     else:
         input_model = input("Wrong input of photon : {1e4, 1e5, 1e6}")
 
-
+# Best model
 nn_model = CNN()
 
-# best set-up for CNN
+# Best hyperparameters for CNN
 lr = 0.00001
 batch_size = 20
 
