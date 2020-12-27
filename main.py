@@ -50,6 +50,7 @@ def testing(nn_model, nb_photon, nb_epoch, lr, batch_size, GPU=False):
 ############
 #   Main   #
 ############
+
 GPU = True
 
 input_photon = input("Number of photons :")

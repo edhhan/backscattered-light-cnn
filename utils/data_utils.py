@@ -46,9 +46,15 @@ def load_data(nb_photon):
             input_intensity = example_dict.get("detected")
             input_flatten = np.array(input_intensity, dtype=np.float)
 
-            # 5 labels
-            label = example_dict.get("labels")
-            label = np.array(label)
+            # Correct version for 3 labels
+            thickness = float(example_dict.get("epaisseur"))
+            if 8 <= thickness < 12:
+                label = np.array([1, 0, 0])
+            elif 12 <= thickness < 16:
+                label = np.array([0, 1, 0])
+            elif 16 <= thickness <= 20:
+                label = np.array([0, 0, 1])
+
 
             # Add noise
             signal_shot_poisson, signal_temp = gen_noise(input_flatten, float(nb_photon), 1100, 1225)
@@ -103,25 +109,27 @@ class CustomDataSetLoaderCNN(Dataset):
         return self.len
 
 
-def preprocess(nb_photon, batch_size,
-               loading=True):  # flag to load data if necessary, SHOULD BE FALSE if data is already loaded
+def preprocess(nb_photon, batch_size):  # flag to load data if necessary, SHOULD BE FALSE if data is already loaded
 
-    # Load data from JSON file if necessary (LOAD_DATA = True)
-    if loading:
-        try:
-            load_data(nb_photon)
-        except Exception as e:
-            print(e, "unzipping data :" + nb_photon)
-            os.system("cd data")
-            if platform.system() == "Windows":
-                os.system("tar -xf " + nb_photon + ".zip")
-            else:
-                os.system("unzip " + nb_photon + ".zip")
+    # Load data from JSON file if necessary
+    working_dir = os.getcwd()
+    data_dir = os.path.join(working_dir, "data")
+    os.chdir(data_dir)
 
-            os.system("cd ..")
+    try:
+        load_data(nb_photon)
+    except Exception as e:
+        print(e, "unzipping data :" + nb_photon)
+        if platform.system() == "Windows":
+            os.system("tar -xf " + nb_photon + ".zip")
+            load_data(nb_photon)  # Note current directory is data
+        else:
+            os.system("unzip " + nb_photon + ".zip")
+            load_data(nb_photon)  # Note current directory is data
 
-    # Import pre-loaded data from .npy file
+    # Import pre-loaded data from .npy file (in data folder)
     data_load = np.load("data" + "_" + nb_photon + ".npy", allow_pickle=True)
+    os.chdir(working_dir)
 
     # Separating data into validation and training sets
     validation_percentage = 0.20  # we reserve 20% of our data for validation
