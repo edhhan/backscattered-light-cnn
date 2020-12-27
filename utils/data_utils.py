@@ -1,5 +1,6 @@
 import json
 import os
+import platform
 
 import torch
 from torch.utils.data import Dataset, DataLoader
@@ -9,8 +10,8 @@ import random
 
 def to_json(nb_photon):
 
-    current_path = os.path.dirname(os.path.realpath(__file__))
-    data_path = os.path.join(current_path, nb_photon)
+    current_dir = os.getcwd()
+    data_path = os.path.join(current_dir, nb_photon)
     files = os.listdir(data_path)
 
     for file in files:
@@ -29,7 +30,8 @@ def load_data(nb_photon):
     :return: the actual return is a .npy saved file in the main repos
     """
 
-    data_path = "C:/Users/Edward/Desktop" + "\\" + nb_photon
+    current_dir = os.getcwd()
+    data_path = os.path.join(current_dir, nb_photon)
     files = os.listdir(data_path)
     data = []
 
@@ -44,18 +46,9 @@ def load_data(nb_photon):
             input_intensity = example_dict.get("detected")
             input_flatten = np.array(input_intensity, dtype=np.float)
 
-            # Correct version for 3 labels
-            thickness = float(example_dict.get("epaisseur"))
-            if 8 <= thickness < 12:
-                label = np.array([1, 0, 0])
-            elif 12 <= thickness < 16:
-                label = np.array([0, 1, 0])
-            elif 16 <= thickness <= 20:
-                label = np.array([0, 0, 1])
-
-            # Old version with 5 labels
-            # label = example_dict.get("labels")
-            # label = np.array(label)
+            # 5 labels
+            label = example_dict.get("labels")
+            label = np.array(label)
 
             # Add noise
             signal_shot_poisson, signal_temp = gen_noise(input_flatten, float(nb_photon), 1100, 1225)
@@ -66,7 +59,7 @@ def load_data(nb_photon):
             print(file, str(e))
 
     random.shuffle(data)
-    np.save("data.npy", data)
+    np.save("data" + "_" + nb_photon + ".npy", data)
 
 
 def reformat(data_intensity):
@@ -93,15 +86,11 @@ class CustomDataSetLoaderCNN(Dataset):
         for i, iterable_data in enumerate(data):
             try:
 
-                # Normal input
-                #input_matrix = reformat(iterable_data[0]*1000)
-                #input_matrix_tensor = torch.from_numpy(input_matrix).view(-1, 35, 35)
-                #self.X_data.append(input_matrix_tensor)
-
                 # Split input
                 self.X_data.append(torch.from_numpy(iterable_data[0] * 1000).view(-1, input_size, input_size))
                 self.Y_data.append(torch.from_numpy(iterable_data[1]).view(-1, 1, label_size))
                 counter += 1
+
             except Exception as e:
                 print(i, str(e))
 
@@ -114,16 +103,25 @@ class CustomDataSetLoaderCNN(Dataset):
         return self.len
 
 
-def preprocess(model_name, nb_photon, batch_size,
+def preprocess(nb_photon, batch_size,
                loading=True):  # flag to load data if necessary, SHOULD BE FALSE if data is already loaded
 
     # Load data from JSON file if necessary (LOAD_DATA = True)
     if loading:
-        #to_json(nb_photon)
-        load_data(nb_photon)
+        try:
+            load_data(nb_photon)
+        except Exception as e:
+            print(e, "unzipping data :" + nb_photon)
+            os.system("cd data")
+            if platform.system() == "Windows":
+                os.system("tar -xf " + nb_photon + ".zip")
+            else:
+                os.system("unzip " + nb_photon + ".zip")
+
+            os.system("cd ..")
 
     # Import pre-loaded data from .npy file
-    data_load = np.load("data.npy", allow_pickle=True)
+    data_load = np.load("data" + "_" + nb_photon + ".npy", allow_pickle=True)
 
     # Separating data into validation and training sets
     validation_percentage = 0.20  # we reserve 20% of our data for validation

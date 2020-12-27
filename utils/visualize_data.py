@@ -100,20 +100,20 @@ for data in data_load:
 
 ax1[1].legend()
 fig1.tight_layout(rect=[0, 0.03, 1, 0.95])
-fig1.suptitle("Courbes sans bruit")
+fig1.suptitle("Curves without noise")
 for ax in ax1.flat:
-    ax.set(xlabel="distance radiale (mm)", ylabel="Pourcentage de photons détectés (%)")
+    ax.set(xlabel="Radius (mm)", ylabel="Percentage of detected photons (%)")
 ax1[1].set_xlim(1, 3)
 
 ax2[1].legend()
-fig2.suptitle("Courbes avec Shotnoise")
+fig2.suptitle("Curves with Shotnoise")
 for ax in ax2.flat:
-    ax.set(xlabel="distance radiale (mm)", ylabel="Pourcentage de photons détectés (%)")
+    ax.set(xlabel="Radius (mm)", ylabel="Percentage of detected photons (%)")
 ax2[1].set_xlim(1, 3)
 
 ax3[1].legend()
-fig3.suptitle("Courbes avec Shotnoise et bruit thermique")
+fig3.suptitle("Curves with Shotnoise and Thermal noise")
 for ax in ax3.flat:
-    ax.set(xlabel="distance radiale (mm)", ylabel="Pourcentage de photons détectés (%)")
+    ax.set(xlabel="Radius (mm)", ylabel="Percentage of detected photons (%)")
 ax3[1].set_xlim(3, 4)
 plt.show()

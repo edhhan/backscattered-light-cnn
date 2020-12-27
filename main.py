@@ -7,7 +7,7 @@ from utils.data_utils import preprocess
 from utils.training_utils import get_accuracy, train
 
 
-def testing(nn_model, model_name, nb_photon, nb_epoch, lr, batch_size, GPU=False):
+def testing(nn_model, nb_photon, nb_epoch, lr, batch_size, GPU=False):
     """
     :param nn_model:
     :param nb_epoch:
@@ -23,7 +23,7 @@ def testing(nn_model, model_name, nb_photon, nb_epoch, lr, batch_size, GPU=False
     accuracies = []
     validation_losses = []
 
-    train_loader, validation_loader, accuracy_loader = preprocess(model_name, nb_photon, batch_size)
+    train_loader, validation_loader, accuracy_loader = preprocess(nb_photon, batch_size)
 
     for epoch in tqdm(range(1, nb_epoch + 1)):
 
@@ -50,17 +50,17 @@ def testing(nn_model, model_name, nb_photon, nb_epoch, lr, batch_size, GPU=False
 ############
 #   Main   #
 ############
-GPU = False
+GPU = True
 
-input_photon = input("Nombre de photons:")
+input_photon = input("Number of photons :")
 
 # Input nb of photons
 input_ok = False
 while input_ok is False:
-    if input_photon == '1e3' or '1e3' or '1e5' or '1e6':
+    if input_photon == '1e4' or '1e5' or '1e6':
         input_ok = True
     else:
-        input_model = input("wrong input of photon: {1e3, 1e4, 1e5, 1e6}")
+        input_model = input("Wrong input of photon : {1e4, 1e5, 1e6}")
 
 
 nn_model = CNN()
@@ -69,9 +69,7 @@ nn_model = CNN()
 lr = 0.00001
 batch_size = 20
 
-if input_photon == "1e3":
-    nb_epoch = 20
-elif input_photon == "1e4":
+if input_photon == "1e4":
     nb_epoch = 25
 elif input_photon == "1e5":
     nb_epoch = 75
@@ -79,7 +77,6 @@ elif input_photon == "1e6":
     nb_epoch = 300
 
 precision, accuracy_loader, training_losses, validation_losses, accuracies = testing(nn_model,
-                                                                                     "cnn",
                                                                                      input_photon,
                                                                                      nb_epoch,
                                                                                      lr,
@@ -91,7 +88,7 @@ plt.figure(1)
 plt.plot(range(1, nb_epoch+1), training_losses, '--b', label='Training')
 plt.plot(range(1,nb_epoch+1), validation_losses, '--r', label='Validation')
 plt.xlabel('Epoch')
-plt.ylabel('Log négatif de vraisemblance moyenne')
+plt.ylabel('Negative log likelihood')
 plt.legend()
 plt.show()
 

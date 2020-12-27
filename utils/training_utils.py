@@ -32,9 +32,6 @@ def train(nn_model, loader, optimizer, GPU):
                     target_nll[i] = j
 
         loss = F.nll_loss(out_values, target_nll)
-
-        #loss = F.multilabel_soft_margin_loss(out_values, target)
-
         loss_training = loss_training + loss.item()
         loss.backward()
         optimizer.step()
