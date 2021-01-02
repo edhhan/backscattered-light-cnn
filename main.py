@@ -51,7 +51,7 @@ def testing(nn_model, nb_photon, nb_epoch, lr, batch_size, GPU=False):
 #   Main   #
 ############
 
-GPU = True
+GPU = True  # Unflag if no acces to a GPU
 input_photon = input("Number of photons :")
 
 # Input nb of photons
