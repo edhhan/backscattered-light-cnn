@@ -14,7 +14,7 @@ Each profil is a 28x28 image of grey-scale (the intensity of light). Example wit
 We apply different perturbation on the images, such as thermal and shot noise. Example with 1e6 :
 <img src="https://github.com/edhhan/backscattered-light-cnn/blob/main/images/intensity_th.png" width="500" height="300">
 
-The data profils are initially contained in a .zip file, for efficiency space management purposes. With the first run, the code should automatically unzip the datasets and generate a .npy file, for the corresponding number of photons (e.g. 1e4), in the local repos. For the next runs, the code will directly load the .npy file.
+The physical parameters are typical for a 1100nm laser setup. See gen_data(signal, nb_photons, wavelength, dim) from utils/data_utils.py for more details.
 
 ## DL models
 We use the PyTorch library to implement different DL models : a CNN, a FCC and a hybrid CNN-FCC. Without any suprise, the CNN performs better than other models since the task implies image classification. 
@@ -33,9 +33,23 @@ matplotlib.pyplot
 tqdm 
 ```
 
-# Results
+# Run
+
+-The data profils are initially contained in a .zip file, for efficiency space management purposes. With the first run, the code should automatically unzip the datasets and generate a .npy file, for the corresponding number of photons (e.g. 1e4), in the local repos. For the next runs, the code will directly load the .npy file.
+
+-If you don't have acces to a GPU-cuda, make sure to unflag the GPU boolean variable at the beginning of the main section.
+
+-Choose a number of photon between : 1e4, 1e5 or 1e6.
 
 
+# Results with 1e6
+With 5 different runs we obtained an average of 91.6% and a standard-deviation of 1.8% for 3 classes. The precision isn't that great considering we have only 3 classes, however the precision was considered great enough as a proof of concept. In addition, the physical noise artifically added decreases significantly the quality of the 28x28 images and the dataset itselft is pretty small for a context of DL. 
+
+<img src="https://github.com/edhhan/backscattered-light-cnn/blob/main/images/accuracy_1e6.png.png" width="500" height="300">
+
+<img src="https://github.com/edhhan/backscattered-light-cnn/blob/main/images/losses_1e6.png.png" width="500" height="300">
+
+Without any noise, we obtained better results with an average of 95.1% and a standard 1.4% for 3 classes. Our best run gave a precision of 97.5%.
 
 
 
