@@ -70,11 +70,11 @@ lr = 0.00001
 batch_size = 20
 
 if input_photon == "1e4":
-    nb_epoch = 100
+    nb_epoch = 50
 elif input_photon == "1e5":
-    nb_epoch = 150
+    nb_epoch = 100
 elif input_photon == "1e6":
-    nb_epoch = 300
+    nb_epoch = 150
 
 precision, accuracy_loader, training_losses, validation_losses, accuracies = testing(nn_model,
                                                                                      input_photon,
