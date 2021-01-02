@@ -8,9 +8,12 @@ We generate our own dataset of backscattered light profils with random thickness
 
 We work with considerably small datasets approximately 1500 profils for each number of photons : we were time restricted and the project itself is only a proof of concept. We accord 20% of the dataset for validation and test purposes. 
 
-Each profil is a 28x28 image of grey-scale (the intensity of light). 
+Each profil is a 28x28 image of grey-scale (the intensity of light). Example with 1e6 :
+<img src="https://github.com/edhhan/backscattered-light-cnn/blob/main/images/intensity_nonoise.png" width="500" height="300">
 
-We apply different perturbation on the images, such as thermal and shot noise.
+We apply different perturbation on the images, such as thermal and shot noise. Example with 1e6 :
+<img src="https://github.com/edhhan/backscattered-light-cnn/blob/main/images/intensity_th.png" width="500" height="300">
+
 
 ## DL models
 We use the PyTorch library to implement different DL models : a CNN, a FCC and a hybrid CNN-FCC. Without any suprise, the CNN performs better than other models since the task implies image classification. 
