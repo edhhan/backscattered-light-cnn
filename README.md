@@ -14,8 +14,31 @@ Each profil is a 28x28 image of grey-scale (the intensity of light). Example wit
 We apply different perturbation on the images, such as thermal and shot noise. Example with 1e6 :
 <img src="https://github.com/edhhan/backscattered-light-cnn/blob/main/images/intensity_th.png" width="500" height="300">
 
+The data profils are initially contained in a .zip file, for efficiency space management purposes. With the first run, the code should automatically unzip the datasets and generate a .npy file, for the corresponding number of photons (e.g. 1e4), in the local repos. For the next runs, the code will directly load the .npy file.
 
 ## DL models
 We use the PyTorch library to implement different DL models : a CNN, a FCC and a hybrid CNN-FCC. Without any suprise, the CNN performs better than other models since the task implies image classification. 
 
-# Requirements
+# Packages
+```
+numpy
+```
+```
+torch
+```
+```
+matplotlib.pyplot
+```
+```
+tqdm 
+```
+
+# Results
+
+
+
+
+
+
+
+
