@@ -58,8 +58,11 @@ def load_data(nb_photon):
 
             # Add noise
             signal_shot_poisson, signal_temp = gen_noise(input_flatten, float(nb_photon), 1100, 1225)
-
             data.append([signal_temp, label])
+
+            # Without noise
+            #data.append([input_flatten, label])
+
 
         except Exception as e:
             print(file, str(e))

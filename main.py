@@ -70,9 +70,9 @@ lr = 0.00001
 batch_size = 20
 
 if input_photon == "1e4":
-    nb_epoch = 25
+    nb_epoch = 100
 elif input_photon == "1e5":
-    nb_epoch = 75
+    nb_epoch = 150
 elif input_photon == "1e6":
     nb_epoch = 300
 
