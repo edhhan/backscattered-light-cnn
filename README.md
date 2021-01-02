@@ -19,6 +19,8 @@ The physical parameters are typical for a 1100nm laser setup. See gen_data(signa
 ## DL models
 We use the PyTorch library to implement different DL models : a CNN, a FCC and a hybrid CNN-FCC. Without any suprise, the CNN performs better than other models since the task implies image classification. 
 
+The hyperparameters of the CNN model were hand-tuned, thus the model isn't properly optimized. 
+
 # Packages
 ```
 numpy
