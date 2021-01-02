@@ -47,9 +47,9 @@ tqdm
 # Results with 1e6
 With 5 different runs we obtained an average of 91.6% and a standard-deviation of 1.8% for 3 classes. The precision isn't that great considering we have only 3 classes, however the precision was considered great enough as a proof of concept. In addition, the physical noise artifically added decreases significantly the quality of the 28x28 images and the dataset itselft is pretty small for a context of DL. 
 
-<img src="https://github.com/edhhan/backscattered-light-cnn/blob/main/images/accuracy_1e6.png.png" width="500" height="300">
+<img src="https://github.com/edhhan/backscattered-light-cnn/blob/main/images/accuracy_1e6.png" width="500" height="300">
 
-<img src="https://github.com/edhhan/backscattered-light-cnn/blob/main/images/losses_1e6.png.png" width="500" height="300">
+<img src="https://github.com/edhhan/backscattered-light-cnn/blob/main/images/losses_1e6.png" width="500" height="300">
 
 Without any noise, we obtained better results with an average of 95.1% and a standard 1.4% for 3 classes. Our best run gave a precision of 97.5%.
 
